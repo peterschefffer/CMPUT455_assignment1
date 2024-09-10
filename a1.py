@@ -166,11 +166,39 @@ class CommandInterface:
 
         if y_count == y_max:
             return -2
-
+        
+        # 3 in a row X direction violation
+        if x_pos >= 2:
+            if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos - 2] == digit:
+                return -1
+        if x_pos <= self.x_dim - 3:
+            if self.board[y_pos][x_pos + 1] == digit and self.board[y_pos][x_pos + 2] == digit:
+                return -1
+        if x_pos >= 1:
+            if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
+                return -1
+        if x_pos <= self.x_dim - 2:
+            if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
+                return -1
+        
+        # 3 in a row y direction violation
+        if y_pos >= 2:
+            if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos - 2][x_pos] == digit:
+                return -1
+        if y_pos <= self.y_dim - 3:
+            if self.board[y_pos + 1][x_pos] == digit and self.board[y_pos + 2][x_pos] == digit:
+                return -1
+        if y_pos >= 1:
+            if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
+                return -1
+        if y_pos <= self.y_dim - 2:
+            if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
+                return -1
         return 1
     
     def genmove(self, args):
-        raise NotImplementedError("This command is not yet implemented.")
+        #raise NotImplementedError("This command is not yet implemented.")
+        for 
         return True
     
     def winner(self, args):
