@@ -82,21 +82,23 @@ class CommandInterface:
     def show(self, args):
         #raise NotImplementedError("This command is not yet implemented.")
         if self.board:
-            for i in self.board:
-                for j in i:
-                    print(j, end=" ")
-                print('\n')
+            for point in self.board:
+                print(" ".join([str(x) for x in point]))
         return True
     
     def play(self, args):
         #raise NotImplementedError("This command is not yet implemented.")
+        
+        legal = self.legal(args)
+
+        # check if legal
+        if not legal:
+            return False
 
         x_pos = int(args[0])
         y_pos = int(args[1])
         digit = int(args[2])
-        
-        legal = self.legal(args)
-        
+            
         if legal == 1:
             self.board[y_pos][x_pos] = digit
             self.change_player()
@@ -111,41 +113,73 @@ class CommandInterface:
     
     '''
     Return -1 for a violation of 3 in a row
-    Return -2 for a balance violation
+    Return -2 for a balance violationc  
     Return 1 for legal move
 
     TODO implement 3 in a row check
     '''
     def legal(self, args):
 
-        x_pos = int(args[0])
-        y_pos = int(args[1])
-        digit = int(args[2])
+        formatted_arg = ' '.join([arg if arg.isdigit() else f"'{arg}'" for arg in args])
 
         # check for correct number of arguments
-        if len(args) > 3:
-            print("= illegal move: ", end=" ")
-            for i in args:
-                print(i, end=" ")
-            print("wrong number of arguments")
+        if len(args) != 3:
+            print(f"= illegal move: {formatted_arg} wrong number of arguments")
             return False
 
         # check that play position is in bounds
+        if any(not arg.isdigit() for arg in args):
+            print(f"= illegal move: {formatted_arg} wrong coordinate")
+            return False
+        
+        x_pos = int(args[0])
+        y_pos = int(args[1])
+        digit = int(args[2])
+        
         if x_pos < 0 or x_pos > self.x_dim - 1 or y_pos < 0 or y_pos > self.y_dim - 1:
-            print(f"= wrong coordinate: {x_pos}, {y_pos} is out of bounds")
+            print(f"= illegal move: {formatted_arg} wrong coordinate")
             return False
         
         # check that digit is in {0,1}
         if not digit in [0,1]:
-            print(f"= wrong number: {digit} is not a playable value")
+            print(f"= illegal move: {formatted_arg} wrong number")
             return False
         
         #check that board space is not occupied
         current_board_space = self.board[y_pos][x_pos]
         if current_board_space != ".":
-            print(f"= occupied: position {x_pos}, {y_pos} has already been played")
+            print(f"= illegal move: {formatted_arg} occupied")
             return False
-
+        
+        # 3 in a row X direction violation
+        if self.x_dim >= 3:
+            if x_pos >= 2:
+                if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos - 2] == digit:
+                    return -1
+            if x_pos <= self.x_dim - 3:
+                if self.board[y_pos][x_pos + 1] == digit and self.board[y_pos][x_pos + 2] == digit:
+                    return -1
+            if x_pos >= 1:
+                if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
+                    return -1
+            if x_pos <= self.x_dim - 2:
+                if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
+                    return -1
+        
+        # 3 in a row y direction violation
+        if self.y_dim >= 3:
+            if y_pos >= 2:
+                if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos - 2][x_pos] == digit:
+                    return -1
+            if y_pos <= self.y_dim - 3:
+                if self.board[y_pos + 1][x_pos] == digit and self.board[y_pos + 2][x_pos] == digit:
+                    return -1
+            if y_pos >= 1:
+                if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
+                    return -1
+            if y_pos <= self.y_dim - 2:
+                if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
+                    return -1
 
         x_max = int(self.x_dim / 2) + (self.x_dim % 2)
         y_max = int(self.y_dim / 2) + (self.y_dim % 2)
@@ -156,7 +190,8 @@ class CommandInterface:
         # check x balance of digit
         for i in self.board[y_pos]:
             if i == digit:
-                x_count += 1        
+                x_count += 1       
+
         if x_count == x_max:
             return -2
         
@@ -167,38 +202,11 @@ class CommandInterface:
         if y_count == y_max:
             return -2
         
-        # 3 in a row X direction violation
-        if x_pos >= 2:
-            if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos - 2] == digit:
-                return -1
-        if x_pos <= self.x_dim - 3:
-            if self.board[y_pos][x_pos + 1] == digit and self.board[y_pos][x_pos + 2] == digit:
-                return -1
-        if x_pos >= 1:
-            if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
-                return -1
-        if x_pos <= self.x_dim - 2:
-            if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
-                return -1
-        
-        # 3 in a row y direction violation
-        if y_pos >= 2:
-            if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos - 2][x_pos] == digit:
-                return -1
-        if y_pos <= self.y_dim - 3:
-            if self.board[y_pos + 1][x_pos] == digit and self.board[y_pos + 2][x_pos] == digit:
-                return -1
-        if y_pos >= 1:
-            if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
-                return -1
-        if y_pos <= self.y_dim - 2:
-            if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
-                return -1
         return 1
     
     def genmove(self, args):
         #raise NotImplementedError("This command is not yet implemented.")
-        for 
+        # for 
         return True
     
     def winner(self, args):
