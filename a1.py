@@ -159,12 +159,12 @@ class CommandInterface:
             if x_pos <= self.x_dim - 3:
                 if self.board[y_pos][x_pos + 1] == digit and self.board[y_pos][x_pos + 2] == digit:
                     return -1
-            if x_pos >= 1:
+            if x_pos >= 1 and x_pos < self.x_dim - 1:
                 if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
                     return -1
-            if x_pos <= self.x_dim - 2:
-                if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
-                    return -1
+            # if x_pos <= self.x_dim - 2:
+            #     if self.board[y_pos][x_pos - 1] == digit and self.board[y_pos][x_pos + 1] == digit:
+            #         return -1
         
         # 3 in a row y direction violation
         if self.y_dim >= 3:
@@ -174,12 +174,12 @@ class CommandInterface:
             if y_pos <= self.y_dim - 3:
                 if self.board[y_pos + 1][x_pos] == digit and self.board[y_pos + 2][x_pos] == digit:
                     return -1
-            if y_pos >= 1:
+            if y_pos >= 1 and y_pos < self.y_dim - 1:
                 if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
                     return -1
-            if y_pos <= self.y_dim - 2:
-                if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
-                    return -1
+            # if y_pos <= self.y_dim - 2:
+            #     if self.board[y_pos - 1][x_pos] == digit and self.board[y_pos + 1][x_pos] == digit:
+            #         return -1
 
         x_max = int(self.x_dim / 2) + (self.x_dim % 2)
         y_max = int(self.y_dim / 2) + (self.y_dim % 2)
