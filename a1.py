@@ -3,7 +3,7 @@
 # Full assignment specification here: https://webdocs.cs.ualberta.ca/~mmueller/courses/cmput455/assignments/a1.html
 
 import sys
-
+import random
 class CommandInterface:
     # The following is already defined and does not need modification
     # However, you may change or add to this code as you see fit, e.g. adding class variables to init
