@@ -206,11 +206,67 @@ class CommandInterface:
     
     def genmove(self, args):
         #raise NotImplementedError("This command is not yet implemented.")
-        # for 
+
+        args = []
+
+        x_pos = random.randint(0,self.x_dim-1)
+        args.append(str(x_pos))
+        y_pos = random.randint(0, self.y_dim-1)
+        args.append(str(y_pos))
+        digit = random.randint(0,1)
+        args.append(str(digit))
+        
+
+        legal = self.legal(args)
+        
+
+        # check if legal
+        if not legal:
+            return False
+            
+        if legal == 1:
+            self.board[y_pos][x_pos] = digit
+            self.change_player()
+
+        elif legal == -1:
+            print(f"= illegal move: {x_pos} {y_pos} {digit} three in a row violation")
+            return False
+        elif legal == -2:
+            print(f"= illegal move: {x_pos} {y_pos} {digit} too many {digit}")
+            return False
+         
         return True
     
     def winner(self, args):
-        raise NotImplementedError("This command is not yet implemented.")
+        #raise NotImplementedError("This command is not yet implemented.")
+
+
+        #check if board is empty
+
+        args = []
+
+
+    #check for digit 0
+        for y in range(self.y_dim-1):
+            for x in range(self.x_dim-1):
+                pos =  self.board[y][x]
+                if pos == "." :
+                    args.clear()
+                    args.append(str(x))
+                    args.append(str(y)) 
+                    args.append("0")
+                    legal = self.legal(args)
+                    if legal == 1:
+                        print("unfinished")
+                        return True
+                    args.pop()
+                    args.append("1")
+                    legal = self.legal(args)
+                    if legal == 1:
+                        print("unfinished")
+                        return True
+               
+        print(self.current_player)
         return True
     
     def change_player(self):
