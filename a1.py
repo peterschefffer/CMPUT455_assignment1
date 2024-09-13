@@ -280,6 +280,7 @@ class CommandInterface:
 
         if not legal_moves:
             print('resign')
+            # self.change_player()
             return True
 
         rand_move = random.choice(legal_moves)
@@ -365,35 +366,42 @@ class CommandInterface:
 
     
     def winner(self, args):
-        
-      
-        args = []
+
+        # args = []
      
-        for y in range(self.y_dim-1):
-             for x in range(self.x_dim-1):
-                pos =  self.board[y][x]
-                if pos == "." :
-                    args.clear()
-                    args.append(str(x))
-                    args.append(str(y)) 
-                    args.append("0")
-                    legal = self.legal(args)
-                    if legal == 1 :
-                        print('\nunfinished')
-                        return True
+        # for y in range(self.y_dim-1):
+        #      for x in range(self.x_dim-1):
+        #         pos =  self.board[y][x]
+        #         if pos == "." :
+        #             args.clear()
+        #             args.append(str(x))
+        #             args.append(str(y)) 
+        #             args.append("0")
+        #             legal = self.legal(args)
+        #             if legal == 1 :
+        #                 print('\nunfinished')
+        #                 return True
                         
-                    args.pop()
-                    args.append("1")
-                    legal = self.legal(args)
-                    if legal == 1 : 
-                        print('\nunfinished')
-                        return True
-        
+        #             args.pop()
+        #             args.append("1")
+        #             legal = self.legal(args)
+        #             if legal == 1 : 
+        #                 print('\nunfinished')
+        #                 return True
+        any_legal = self.check_moves()
 
-        self.change_player()
-        print(self.current_player)
+        if any_legal:
+            print('unfinished')
+            return True
+        else:
+            self.change_player()
+            print(self.current_player)
+            return True
 
-        return True
+        # self.change_player()
+        # print(self.current_player)
+
+        # return True
     
     def change_player(self):
         if self.current_player == 1:
