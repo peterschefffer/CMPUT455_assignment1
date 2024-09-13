@@ -207,6 +207,17 @@ class CommandInterface:
     def genmove(self, args):
         #raise NotImplementedError("This command is not yet implemented.")
 
+
+        
+        #text needs to be added
+
+        status  =  self.check_moves()
+
+        if status == True:
+            print('resign')
+            return True
+
+
         args = []
 
         x_pos = random.randint(0,self.x_dim-1)
@@ -215,10 +226,16 @@ class CommandInterface:
         args.append(str(y_pos))
         digit = random.randint(0,1)
         args.append(str(digit))
-        
 
-        legal = self.legal(args)
+
+        # syntax options when testing
+    
+
+        print(x_pos,y_pos,digit)
+        #print(f"@{x_pos} {y_pos} {digit}")
         
+        
+        legal = self.legal(args)
 
         # check if legal
         if not legal:
@@ -236,19 +253,16 @@ class CommandInterface:
             return False
          
         return True
-    
-    def winner(self, args):
-        #raise NotImplementedError("This command is not yet implemented.")
 
 
-        #check if board is empty
+#create helper function for resign in genmove
 
+    def check_moves(self):
+        
         args = []
 
-
-    #check for digit 0
-        for y in range(self.y_dim-1):
-            for x in range(self.x_dim-1):
+        for y in range(self.y_dim):
+             for x in range(self.x_dim):
                 pos =  self.board[y][x]
                 if pos == "." :
                     args.clear()
@@ -256,17 +270,47 @@ class CommandInterface:
                     args.append(str(y)) 
                     args.append("0")
                     legal = self.legal(args)
-                    if legal == 1:
-                        print("unfinished")
-                        return True
+                    if legal == 1 :
+                        return False
                     args.pop()
                     args.append("1")
                     legal = self.legal(args)
-                    if legal == 1:
-                        print("unfinished")
-                        return True
-               
+                    if legal == 1 : 
+                        return False
+
+        return True
+
+
+    
+    def winner(self, args):
+        
+      
+        args = []
+     
+        for y in range(self.y_dim-1):
+             for x in range(self.x_dim-1):
+                pos =  self.board[y][x]
+                if pos == "." :
+                    args.clear()
+                    args.append(str(x))
+                    args.append(str(y)) 
+                    args.append("0")
+                    legal = self.legal(args)
+                    if legal == 1 :
+                        print('unfinished')
+                        return False
+                        
+                    args.pop()
+                    args.append("1")
+                    legal = self.legal(args)
+                    if legal == 1 : 
+                        print('unfinished')
+                        return False
+        
+
+        self.change_player()
         print(self.current_player)
+
         return True
     
     def change_player(self):
