@@ -274,13 +274,13 @@ class CommandInterface:
 
 
         
-        #text needs to be added
+        
         legal_moves = self.check_moves()
-        # status  =  self.check_moves()
+        
 
         if not legal_moves:
             print('resign')
-            # self.change_player()
+            
             return True
 
         rand_move = random.choice(legal_moves)
@@ -291,40 +291,7 @@ class CommandInterface:
         self.board[y_pos][x_pos] = digit
         self.change_player()
         print(x_pos,y_pos,digit)
-        # args = []
 
-        # x_pos = random.randint(0,self.x_dim-1)
-        # args.append(str(x_pos))
-        # y_pos = random.randint(0, self.y_dim-1)
-        # args.append(str(y_pos))
-        # digit = random.randint(0,1)
-        # args.append(str(digit))
-
-
-        # syntax options when testing
-    
-
-        # print(x_pos,y_pos,digit)
-        #print(f"@{x_pos} {y_pos} {digit}")
-        
-        
-        # legal = self.legal(args, silent=True)
-
-        # # check if legal
-        # if not legal:
-        #     return False
-            
-        # if legal == 1:
-        #     self.board[y_pos][x_pos] = digit
-        #     self.change_player()
-
-        # elif legal == -1:
-        #     print(f"= illegal move: {x_pos} {y_pos} {digit} three in a row")
-        #     return False
-        # elif legal == -2:
-        #     print(f"= illegal move: {x_pos} {y_pos} {digit} too many {digit}")
-        #     return False
-         
         return True
 
 
@@ -345,49 +312,14 @@ class CommandInterface:
                     check1 = [str(x),str(y),"1"]
                     if self.legal(check1, silent=True) == 1:
                         legal_moves.append([x, y, 1])
-                # if pos == "." :
-                #     args.clear()
-                #     args.append(str(x))
-                #     args.append(str(y)) 
-                #     args.append("0")
-                #     legal = self.legal(args)
-                #     if legal == 1 :
-                #         return False
-                #     args.pop()
-                #     args.append("1")
-                #     legal = self.legal(args)
-                #     if legal == 1 : 
-                #         return False
 
 
         return legal_moves
-        # return True
-
-
+ 
     
     def winner(self, args):
 
-        # args = []
-     
-        # for y in range(self.y_dim-1):
-        #      for x in range(self.x_dim-1):
-        #         pos =  self.board[y][x]
-        #         if pos == "." :
-        #             args.clear()
-        #             args.append(str(x))
-        #             args.append(str(y)) 
-        #             args.append("0")
-        #             legal = self.legal(args)
-        #             if legal == 1 :
-        #                 print('\nunfinished')
-        #                 return True
-                        
-        #             args.pop()
-        #             args.append("1")
-        #             legal = self.legal(args)
-        #             if legal == 1 : 
-        #                 print('\nunfinished')
-        #                 return True
+
         any_legal = self.check_moves()
 
         if any_legal:
@@ -398,11 +330,7 @@ class CommandInterface:
             print(self.current_player)
             return True
 
-        # self.change_player()
-        # print(self.current_player)
 
-        # return True
-    
     def change_player(self):
         if self.current_player == 1:
             self.current_player = 2
