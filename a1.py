@@ -297,15 +297,15 @@ class CommandInterface:
                     args.append("0")
                     legal = self.legal(args)
                     if legal == 1 :
-                        print('unfinished')
-                        return False
+                        print('\nunfinished')
+                        return True
                         
                     args.pop()
                     args.append("1")
                     legal = self.legal(args)
                     if legal == 1 : 
-                        print('unfinished')
-                        return False
+                        print('\nunfinished')
+                        return True
         
 
         self.change_player()
